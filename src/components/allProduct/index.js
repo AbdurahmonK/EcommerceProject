@@ -4,6 +4,7 @@ import { observer } from 'mobx-react'
 import { Link } from 'react-router-dom'
 import Rating from '@material-ui/lab/Rating'
 import { addProduct } from '../../GlobalStore'
+import Skeleton from '@material-ui/lab/Skeleton'
 import { 
     Card, 
     Grid,
@@ -13,7 +14,8 @@ import {
     CardActions, 
     CssBaseline, 
     CardContent, 
-    CardActionArea, 
+    CardActionArea,
+    CircularProgress, 
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -40,13 +42,22 @@ function _AllProduct() {
         <Container>
             <Typography variant="h2" className={classes.elon}>Our Products</Typography>
             <Grid container spacing={3} justify='center'>
-                {
+                {data ?
                     data.products.map( product => 
                         <Grid item xs={8} sm={6} md={3} key={product.id}>
                             <Card>
                                 <CardActionArea>
                                     <Grid container justify='center'>
-                                        <img className={classes.img} align='center' alt={product.name} src={product.img} />
+                                        {product.img 
+                                            ? (<img 
+                                            align='center' 
+                                            src={product.img} 
+                                            alt={product.name} 
+                                            className={classes.img} 
+                                            />)
+                                            : (<Skeleton variant="circle" width={40} height={40} /> 
+                                            //   <Skeleton variant="rect" width={210} height={118} />
+                                        )}
                                     </Grid>
                                     <CardContent>
                                         <Typography variant='h4'>{product.name}</Typography>
@@ -74,7 +85,7 @@ function _AllProduct() {
                                 </CardActions>
                             </Card>
                         </Grid>
-                    )
+                    ) : <CircularProgress />
                 }
             </Grid>
         </Container>
