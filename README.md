@@ -1,14 +1,14 @@
-This is a Ecommerce Project.
+This is a test tasks Ecommerce Project.
 
 ## Available Packages
 
-    @material-ui/core,
-    @material-ui/icons,
-    @material-ui/lab,
-    @material-ui/styles,
     mobx,
     mobx-react,
     react-router-dom
+    @material-ui/lab,
+    @material-ui/core,
+    @material-ui/icons,
+    @material-ui/styles,
 
 In the project directory, you can run:
 
