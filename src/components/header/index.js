@@ -8,7 +8,7 @@ import { Toolbar, Badge, Typography, AppBar, IconButton } from '@material-ui/cor
 
 function _Header() {
   const classes = useStyles()
- const { quantity } = GlobalState
+  const { quantity } = GlobalState
   return (
     <div>
       <AppBar position='static'>

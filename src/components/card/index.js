@@ -6,8 +6,18 @@ import AddIcon from '@material-ui/icons/Add'
 import { useHistory } from 'react-router-dom'
 import DeleteIcon from '@material-ui/icons/Delete'
 import { makeStyles } from '@material-ui/core/styles'
-import { GlobalState, addProduct } from '../../GlobalStore'
-import { Container, ButtonBase, Paper, Typography, Grid, Fab, CssBaseline, Button } from '@material-ui/core'
+import { GlobalState, addProduct, deleteProduct } from '../../GlobalStore'
+import { 
+    Fab, 
+    Grid, 
+    Paper, 
+    Button, 
+    Divider, 
+    Container, 
+    ButtonBase, 
+    Typography, 
+    CssBaseline, 
+} from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
     elon: {
@@ -36,34 +46,28 @@ function _Card() {
   const classes = useStyles() 
   const { goBack } = useHistory()
   const { added, prices } = GlobalState
-  const [ deleted, setDeleted ] = React.useState(added)
 
   let price = 0 
-  let pp = toJS(prices)
-//   console.log(pp)
-  for(let i = 0; i < pp.length; i++){
-    price +=pp[i]
+  let newPrices = toJS(prices)
+//   console.log(newPrices)
+  for(let i = 0; i < newPrices.length; i++){
+    price +=newPrices[i]
   }
 //   console.log(price)
 
- const deleteProduct = index => {
-     let newArr = [...toJS(added)]
-     newArr.splice(index, 1)
-     setDeleted(newArr)
-    // console.log(newArr)
- }
   return (
         <>
             <CssBaseline />
             <Container maxWidth='md'>
                 <Typography variant='h2' className={classes.elon}>Shopping Card</Typography>
                 <Paper className={classes.paper}>
-                    {deleted.map((elem, index) => 
+                    {added.length ? added.map((elem, index) => 
                         elem.map((product) => 
-                        <Grid container justify='space-around' key={index} alignItems='center'>
-                        <ButtonBase className={classes.image}>
-                            <img className={classes.img} alt={product.name} src={product.img} />
-                        </ButtonBase> 
+                        <div key={index}>
+                        <Grid container justify='space-around'  alignItems='center'>
+                            <ButtonBase className={classes.image}>
+                                <img className={classes.img} alt={product.name} src={product.img} />
+                            </ButtonBase> 
                         <Grid>
                             <Typography variant='h3'>{product.name}</Typography>
                             <Typography variant="body2">{product.description}</Typography>
@@ -73,17 +77,19 @@ function _Card() {
                             <Typography variant='h3'>${product.price}</Typography>
                             <Rating name='read-only' value={product.rating} readOnly />
                         </Grid>
-                        <Grid>
-                            {/* <Paper className={classes.paper}><Typography variant='h4'>1</Typography></Paper> */}
-                        </Grid>
+                        {/* <Grid>
+                            <Paper className={classes.paper}><Typography variant='h4'>1</Typography></Paper>
+                        </Grid> */}
                         <Grid>
                             <Fab color='secondary' onClick={() => addProduct(product.id)}><AddIcon /></Fab>
                         </Grid>
                         <Grid>
-                            <Fab onClick={() => deleteProduct( index)}><DeleteIcon /></Fab>
+                            <Fab onClick={() => deleteProduct(index)}><DeleteIcon /></Fab>
                         </Grid>
-                    </Grid>
-                    ))}
+                        </Grid>
+                        <Divider variant='middle' />
+                        </div>
+                    )) : <Typography variant='h4'>Your card is Empty!</Typography>}
                 </Paper>
                 <Grid container justify='flex-end' style={{marginTop: 15}} alignItems='center'>
                     <Typography variant='h4'>Total Price:</Typography>
@@ -92,7 +98,10 @@ function _Card() {
                     </Paper>
                 </Grid>
                 <Grid container justify='center' style={{marginTop: 15}}>
-                    <Button variant='contained' color='primary' onClick={goBack}>Continue Shopping</Button>
+                    {added.length 
+                        ? <Button variant='contained' color='primary' onClick={goBack}>Continue Shopping</Button> 
+                        : <Button variant='contained' color='secondary' href='/'>Shop Now!</Button>
+                    }
                 </Grid>
             </Container>
         </>
